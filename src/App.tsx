@@ -1,38 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react'; // Импорт библиотеки React для создания компонентов и использования JSX
+import { Layout } from 'antd'; // Импорт компонента Layout из Ant Design для построения структуры страницы
 
-function App() {
-  const [count, setCount] = useState(0)
+import Navbar from './components/Navbar/Navbar'; // Импорт компонента Navbar из соответствующего файла
+import Sidebar from './components/Sidebar/Sidebar'; // Импорт компонента Sidebar из соответствующего файла
+import CustomContent from './components/MainContent/MainContent'; // Импорт компонента CustomContent из соответствующего файла
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+const App: React.FC = () => ( // Объявление функционального React-компонента App с типизацией React.FC
+  <Layout style={{ minHeight: '100vh', minWidth: '100vw'}}> {/* Основной контейнер Layout с минимальной высотой на всю высоту окна браузера */}
+    <Navbar /> {/* Вставка компонента Navbar — верхняя навигационная панель */}
+    <Layout style={{ flex: 1, display: 'flex' }}> {/* Вложенный Layout, занимающий всё оставшееся пространство, с внутренними отступами */}
+      <Sidebar /> {/* Вставка компонента Sidebar — боковая панель навигации */}
+      <CustomContent /> {/* Вставка компонента CustomContent — основной контент страницы */}
+    </Layout>
+  </Layout>
+);
 
-export default App
-
-
-
+export default App; // Экспорт главного компонента App для использования в index.tsx и других местах
