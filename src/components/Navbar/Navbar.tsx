@@ -1,14 +1,47 @@
-import React from 'react'; // Импорт библиотеки React, чтобы можно было использовать JSX и React API
-import { Layout, Menu } from 'antd'; // Импорт компонентов Layout и Menu из библиотеки Ant Design
-const { Header } = Layout; // Деструктуризация: выделяем компонент Header из Layout для удобства использования
+import React from 'react';
+import {Layout, Button, Menu} from 'antd';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
-const Navbar: React.FC = () => ( // Объявление функционального компонента Navbar с типом React.FC (React Functional Component)
-  <Header className="header"> {/* Используем компонент Header с классом для стилевой настройки */}
-    <div className="logo" /> {/* Пустой блок div с классом logo, например, для вывода логотипа */}
-    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}> {/* Меню с темной темой, горизонтальной ориентацией и выбранным по умолчанию первым пунктом */}
-      <Menu.Item key="1">Связки</Menu.Item> {/* Пункт меню с ключом 1 и текстом "Главная" */}
-    </Menu>
-  </Header>
-);
+const { Header } = Layout;
 
-export default Navbar; // Экспорт компонента Navbar по умолчанию, чтобы его можно было импортировать в других файлах
+interface NavbarProps {
+  collapsed?: boolean;
+  onToggleCollapsed?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({
+                                         collapsed = false,
+                                         onToggleCollapsed
+                                       }) => {
+  return (
+    <Header  className="header" style={{
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0 24px',
+      color: 'white',
+      justifyContent: 'space-between'
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {onToggleCollapsed && (
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={onToggleCollapsed}
+            style={{
+              fontSize: '16px',
+              width: 64,
+              height: 64,
+              color: 'white'
+            }}
+          />
+        )}
+          <div className="logo" /> {/* Пустой блок div с классом logo, например, для вывода логотипа */}
+          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}> {/* Меню с темной темой, горизонтальной ориентацией и выбранным по умолчанию первым пунктом */}
+            <Menu.Item key="1">Связки</Menu.Item> {/* Пункт меню с ключом 1 и текстом "Главная" */}
+          </Menu>
+      </div>
+        </Header>
+  );
+};
+
+export default Navbar;

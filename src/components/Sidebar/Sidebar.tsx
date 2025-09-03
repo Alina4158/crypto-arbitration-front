@@ -1,31 +1,46 @@
-import React from 'react'; // Импорт библиотеки React для возможности создавать React-компоненты и использовать JSX
-import { Layout, Menu } from 'antd'; // Импорт компонентов Layout и Menu из библиотеки Ant Design для построения интерфейса
-/*import { // Импорт иконок из библиотеки Ant Design icons для использования в меню
-  UserOutlined,
-  LaptopOutlined,
-} from '@ant-design/icons';*/
+import React from 'react';
+import { Layout, Menu } from 'antd';
+import type {MenuKey} from '../../types';
+import { menuItems } from '../../data/mockData';
 
-const { Sider } = Layout; // Деструктуризация: выделяем компонент Sider из Layout для удобства использования в коде
+const { Sider } = Layout;
 
-const Sidebar: React.FC = () => { // Объявление функционального React-компонента Sidebar с типизацией React.FC
-  const items = [ // Определение массива объектов, описывающих пункты меню для Sidebar
-    {
-      key: '1', // Уникальный ключ для первого пункта меню
-      // icon: <UserOutlined />, // Иконка пользователя для первого пункта меню
-      label: 'Межбиржевые', // Текстовая метка первого пункта меню
-    },
-    {
-      key: '2', // Ключ второго пункта меню
-      // icon: <LaptopOutlined />, // Иконка ноутбука для второго пункта меню
-      label: 'Внутрибиржевые', // Метка второго пункта меню
-    },
-  ];
+interface SidebarProps {
+  selectedKey: MenuKey;
+  onSelect: (key: string) => void;
+  collapsed?: boolean;
+}
 
+const Sidebar: React.FC<SidebarProps> = ({
+                                           selectedKey,
+                                           onSelect,
+                                           collapsed = false
+                                         }) => {
   return (
-    <Sider width={200}  className="site-layout-background"> {/* Компонент Sider с шириной 200px и CSS классом для оформления */}
-      <Menu mode="inline" defaultSelectedKeys={['1']} items={items} /> {/* Меню с вертикальной ориентацией (inline), где указаны пункты из items и выбран первый по умолчанию */}
+    <Sider
+      width={250}
+      theme="dark"
+      collapsed={collapsed}
+      collapsible={false}
+    >
+      <Menu
+        mode="inline"
+        selectedKeys={[selectedKey]}
+        style={{
+          height: '100%',
+          borderRight: 0,
+          paddingTop: '10px'
+        }}
+        theme="dark"
+        onSelect={({ key }) => onSelect(key)}
+        items={menuItems.map(item => ({
+          key: item.key,
+          icon: <span style={{ fontSize: '16px' }}>{item.icon}</span>,
+          label: item.label,
+        }))}
+      />
     </Sider>
   );
 };
 
-export default Sidebar; // Экспорт компонента Sidebar по умолчанию для использования в других частях приложения
+export default Sidebar;

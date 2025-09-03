@@ -1,20 +1,53 @@
-import React from 'react'; // Импорт библиотеки React для возможности создавать React-компоненты и использовать JSX
-import { Layout } from 'antd'; // Импорт компонента Layout из библиотеки Ant Design
+import React from 'react';
+import { Layout } from 'antd';
+import type {MenuKey} from '../../types';
+import { InterExchangeTable, IntraExchangeTable } from './Tables';
 
-const { Content } = Layout; // Деструктуризация: выделяем компонент Content из Layout для удобства использования
+const { Content } = Layout;
 
-const CustomContent: React.FC = () => ( // Объявление функционального React-компонента CustomContent с типизацией React.FC
-  <Content
-    style={{ // Задание стилей непосредственно для компонента Content
-      padding: 24, // Внутренний отступ (padding) в 24 пикселя
-      margin: 0, // Отсутствие внешних отступов (margin)
-      minHeight: 280, // Минимальная высота области контента — 280 пикселей
-      background: '#fff', // Фоновый цвет — белый
-    }}
-  >
-    <h1>Основное содержимое</h1> {/* Заголовок первого уровня с текстом */}
-    <p>Здесь можно разместить главную информацию страницы.</p> {/* Обычный абзац с текстом */}
-  </Content>
-);
+interface ContentProps {
+  selectedKey: MenuKey;
+}
 
-export default CustomContent; // Экспорт компонента CustomContent по умолчанию для использования в других частях приложения
+const CustomContent: React.FC<ContentProps> = ({ selectedKey }) => {
+  const renderContent = () => {
+    switch (selectedKey) {
+      case '1':
+        return <InterExchangeTable />;
+      case '2':
+        return <IntraExchangeTable />;
+      case '3':
+        return (
+          <div>
+            <h2 style={{ color: '#1890ff' }}>Навигация 3</h2>
+            <p>Содержимое для третьего пункта меню</p>
+            <p>Здесь можно добавить дополнительную информацию или другие компоненты.</p>
+          </div>
+        );
+      default:
+        return (
+          <div>
+            <h1>Добро пожаловать!</h1>
+            <p>Выберите пункт меню слева для отображения данных.</p>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <Content
+      style={{
+        padding: 24,
+        margin: 0,
+        minHeight: 'calc(100vh - 64px)', // Вычитаем высоту header
+        background: '#fff',
+        width: '100%',
+        overflow: 'auto',
+      }}
+    >
+      {renderContent()}
+    </Content>
+  );
+};
+
+export default CustomContent;
